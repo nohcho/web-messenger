@@ -1,5 +1,33 @@
-# Vue 3 + TypeScript + Vite
+# Web Messenger
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+SPA-приложение, имитирующее мессенджер с списком чатов, историей сообщений и эмуляцией переписки.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Стек
+
+- Vue 3 (Composition API)
+- TypeScript
+- Pinia
+- Vue Router
+- SCSS
+- Vite
+
+## Запуск
+
+```bash
+npm install
+npm run dev
+```
+
+## Возможности
+
+- Список чатов с последним сообщением и онлайн-индикатором
+- История сообщений с группировкой по датам
+- Отправка сообщений (Enter — отправить, Shift+Enter — перенос строки)
+- Автоответ от собеседника через 1–2 секунды
+- Форматирование текста (\*\*жирный\*\*, \*курсив\*)
+- Индикатор непрочитанных сообщений в неактивных чатах
+- Случайная смена статусов онлайн/оффлайн
+- Сохранение истории в localStorage
+- Адаптивная вёрстка (мобильный роут с полноэкранным чатом)
+- Анимация появления новых сообщений
+- Поиск по чатам
