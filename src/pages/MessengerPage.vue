@@ -1,19 +1,22 @@
 <template>
   <div class="messenger">
     <ChatList class="messenger__sidebar" />
-    <div class="messenger__chat">
-      <div class="messenger__placeholder">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
-          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <p>Выберите чат</p>
-      </div>
-    </div>
+    <ChatWindow
+      class="messenger__chat"
+      :chat="activeChat"
+      @send="store.sendMessage"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { useChatsStore } from '@/stores/chats';
 import ChatList from '@/components/ChatList/ChatList.vue';
+import ChatWindow from '@/components/ChatWindow/ChatWindow.vue';
+
+const store = useChatsStore();
+const { activeChat } = storeToRefs(store);
 </script>
 
 <style lang="scss" scoped>
@@ -31,26 +34,8 @@ import ChatList from '@/components/ChatList/ChatList.vue';
   }
 
   &__chat {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $color-bg;
-
     @include mobile {
       display: none;
-    }
-  }
-
-  &__placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    color: $color-text-muted;
-
-    p {
-      font-size: $font-size-lg;
     }
   }
 }
