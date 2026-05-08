@@ -15,13 +15,25 @@
 
     <div class="chat-list__items">
       <div v-if="isLoading" class="chat-list__loading">Загрузка...</div>
-      <ChatListItem
-        v-for="chat in filteredChats"
-        :key="chat.id"
-        :chat="chat"
-        :is-active="chat.id === activeChatId"
-        @select="onSelect(chat.id)"
-      />
+      <div v-else-if="loadError" class="chat-list__error">
+        <p class="chat-list__error-text">{{ loadError }}</p>
+        <button
+          type="button"
+          class="chat-list__retry"
+          @click="store.loadChats"
+        >
+          Повторить
+        </button>
+      </div>
+      <template v-else>
+        <ChatListItem
+          v-for="chat in filteredChats"
+          :key="chat.id"
+          :chat="chat"
+          :is-active="chat.id === activeChatId"
+          @select="onSelect(chat.id)"
+        />
+      </template>
     </div>
   </aside>
 </template>
@@ -35,7 +47,7 @@ import ChatListItem from './ChatListItem.vue';
 
 const store = useChatsStore();
 const router = useRouter();
-const { sortedChats, activeChatId, isLoading } = storeToRefs(store);
+const { sortedChats, activeChatId, isLoading, loadError } = storeToRefs(store);
 const searchQuery = ref('');
 
 const isMobile = computed(() => window.innerWidth <= 768);
@@ -119,6 +131,31 @@ function onSelect(chatId: number) {
     padding: 24px;
     text-align: center;
     color: $color-text-muted;
+  }
+
+  &__error {
+    padding: 24px 16px;
+    text-align: center;
+  }
+
+  &__error-text {
+    margin-bottom: 12px;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+
+  &__retry {
+    padding: 8px 14px;
+    border-radius: $radius-sm;
+    background-color: $color-primary;
+    color: $color-text;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    transition: background-color $transition-fast;
+
+    &:hover {
+      background-color: $color-primary-hover;
+    }
   }
 }
 </style>

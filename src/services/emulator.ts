@@ -18,6 +18,7 @@ class MessengerEmulator {
     onReply: ReplyCallback,
     onStatusChange: StatusCallback
   ) {
+    this.stopStatusEmulation();
     this.chatIds = chatIds;
     this.onReply = onReply;
     this.onStatusChange = onStatusChange;
@@ -44,13 +45,17 @@ class MessengerEmulator {
     }, STATUS_INTERVAL);
   }
 
-  destroy() {
-    this.replyTimers.forEach((timer) => clearTimeout(timer));
-    this.replyTimers.clear();
+  private stopStatusEmulation() {
     if (this.statusInterval) {
       clearInterval(this.statusInterval);
       this.statusInterval = null;
     }
+  }
+
+  destroy() {
+    this.replyTimers.forEach((timer) => clearTimeout(timer));
+    this.replyTimers.clear();
+    this.stopStatusEmulation();
   }
 }
 

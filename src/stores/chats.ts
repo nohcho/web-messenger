@@ -26,6 +26,7 @@ export const useChatsStore = defineStore('chats', () => {
   const chats = ref<Chat[]>([]);
   const activeChatId = ref<number | null>(null);
   const isLoading = ref(false);
+  const loadError = ref<string | null>(null);
 
   const activeChat = computed(() =>
     chats.value.find((c) => c.id === activeChatId.value) ?? null
@@ -57,6 +58,8 @@ export const useChatsStore = defineStore('chats', () => {
   }
 
   async function loadChats() {
+    loadError.value = null;
+
     const cached = loadFromStorage();
     if (cached && cached.length > 0) {
       chats.value = cached;
@@ -76,9 +79,15 @@ export const useChatsStore = defineStore('chats', () => {
       }));
       saveToStorage(chats.value);
       initEmulator();
+    } catch {
+      loadError.value = 'Не удалось загрузить чаты. Попробуйте еще раз.';
     } finally {
       isLoading.value = false;
     }
+  }
+
+  function destroyEmulator() {
+    emulator.destroy();
   }
 
   function setActiveChat(chatId: number | null) {
@@ -128,9 +137,11 @@ export const useChatsStore = defineStore('chats', () => {
     chats,
     activeChatId,
     isLoading,
+    loadError,
     activeChat,
     sortedChats,
     loadChats,
+    destroyEmulator,
     setActiveChat,
     sendMessage,
     getLastMessage,
